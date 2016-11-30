@@ -11,7 +11,7 @@ namespace MultiCurrencyWallet
 {
     public class InputValuePage : ContentPage
     {
-        Picker actionPicker;
+        Picker actionPicker, currencyPicker;
         Label entryLabel;
         Entry valueEntry;
         Button button;
@@ -27,6 +27,7 @@ namespace MultiCurrencyWallet
             };
             actionPicker.Items.Add("Add");
             actionPicker.Items.Add("Remove");
+            actionPicker.SelectedIndex = 0;
             actionPicker.SelectedIndexChanged += actionChanged;
 
             var entryLabel = new Label()
@@ -40,6 +41,18 @@ namespace MultiCurrencyWallet
                 Keyboard = Keyboard.Numeric
             };
 
+
+            currencyPicker = new Picker
+            {
+                Title = "Currency",
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand
+            };
+            currencyPicker.Items.Add("EUR");
+            currencyPicker.Items.Add("GBP");
+            currencyPicker.Items.Add("USD");
+            currencyPicker.SelectedIndex = 0;
+
             button = new Button()
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -48,15 +61,40 @@ namespace MultiCurrencyWallet
             };
             button.Clicked += OnButtonClicked;
 
-            var stack1 = new StackLayout()
+
+            /*var stack1 = new StackLayout()
             {
                 Orientation = StackOrientation.Vertical,
                 Children = { actionPicker, entryLabel, valueEntry, button },
                 HorizontalOptions = LayoutOptions.Center
+            };*/
+
+            var grid = new Grid()
+            {
+                HorizontalOptions = LayoutOptions.Center
             };
 
+            grid.ColumnDefinitions = new ColumnDefinitionCollection
+            {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+            };
+
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            grid.Children.Add(actionPicker, 1, 0);
+            grid.Children.Add(entryLabel, 1, 1);
+            grid.Children.Add(valueEntry, 1, 2);
+            grid.Children.Add(currencyPicker, 1, 3);
+            grid.Children.Add(button, 1, 4);
+
             Content = new StackLayout{
-                Children = { stack1 }
+                Children = { grid }
             };
 
         }
