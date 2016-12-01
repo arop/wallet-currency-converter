@@ -15,10 +15,11 @@ namespace MultiCurrencyWallet
         Label entryLabel;
         Entry valueEntry;
         Button button;
+        DatabaseOps db;
 
-        public InputValuePage()
+        public InputValuePage(DatabaseOps db)
         {
-
+            this.db = db;
             actionPicker = new Picker
             {
                 Title = "Action",
@@ -48,9 +49,11 @@ namespace MultiCurrencyWallet
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand
             };
-            currencyPicker.Items.Add("EUR");
-            currencyPicker.Items.Add("GBP");
-            currencyPicker.Items.Add("USD");
+            
+            foreach (Currency c in db.GetCurrencies())
+            {
+                currencyPicker.Items.Add(c.code + " - " + c.rate);
+            }
             currencyPicker.SelectedIndex = 0;
 
             button = new Button()
