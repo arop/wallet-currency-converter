@@ -18,5 +18,10 @@ namespace MultiCurrencyWallet
         public Currency()
         {
         }
+
+        public double getRate(Currency c)
+        {
+            return this.rate / c.rate; // 1 c = return THIS
+        }
     }
 }
