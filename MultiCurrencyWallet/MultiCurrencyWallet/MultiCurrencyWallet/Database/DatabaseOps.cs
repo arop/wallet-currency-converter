@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 using SQLite;
-
+using MultiCurrencyWallet.Database;
 
 namespace MultiCurrencyWallet
 {
@@ -17,8 +17,11 @@ namespace MultiCurrencyWallet
         {
             database = DependencyService.Get<ISQLite>().GetConnection();
             database.CreateTable<Currency>();
+            database.CreateTable<WalletAmount>();
         }
 
+        
+        ////////////// CURRENCY ///////////////////
         public IEnumerable<Currency> GetCurrencies()
         {
             lock (locker)
@@ -64,6 +67,54 @@ namespace MultiCurrencyWallet
          * Updates item, or inserts if it doesn't exist.
          */
         public void UpdateCurrency(Currency c)
+        {
+            lock (locker)
+            {
+                if (database.Update(c) == 0)
+                    database.Insert(c);
+            }
+        }
+
+
+        ////////////// WALLET AMOUNT ///////////////////
+        public IEnumerable<WalletAmount> GetWalletAmounts()
+        {
+            lock (locker)
+            {
+                return (from i in database.Table<WalletAmount>() select i).ToList();
+            }
+        }
+       
+
+        public WalletAmount GetWalletAmount(string code)
+        {
+            lock (locker)
+            {
+                return database.Table<WalletAmount>().FirstOrDefault(x => x.code == code);
+            }
+        }
+
+        public int DeleteWalletAmount(int id)
+        {
+            lock (locker)
+            {
+                return database.Delete<WalletAmount>(id);
+            }
+        }
+
+
+        public void InsertWalletAmount(WalletAmount c)
+        {
+            lock (locker)
+            {
+                database.Insert(c);
+            }
+        }
+
+        /**
+         * Updates item, or inserts if it doesn't exist.
+         */
+        public void UpdateWalletAmount(WalletAmount c)
         {
             lock (locker)
             {
