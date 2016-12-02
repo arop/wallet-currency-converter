@@ -42,6 +42,7 @@
     <Compile Include="Utils.cs" />
     <Compile Include="InputValuePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Wallet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

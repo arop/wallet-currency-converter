@@ -11,10 +11,10 @@ namespace MultiCurrencyWallet
     {
 
         DatabaseOps db = new DatabaseOps();
+        Wallet wallet = new Wallet();
 
         public App()
         {
-
             // EM FASE DE TESTES, HARD CODED
             db.UpdateCurrency(new Currency() { code = "EUR", rate = 1 });
             db.UpdateCurrency(new Currency() { code = "GBP", rate = 0.85 });
@@ -24,7 +24,7 @@ namespace MultiCurrencyWallet
             Utils.favoriteCurrency = db.GetCurrencies().ElementAt(1);
 
             // The root page of your application
-            var content = new InputValuePage(db);
+            var content = new InputValuePage(db,wallet);
             content.Title = "Add Money";
             MainPage = new NavigationPage(content);
         }

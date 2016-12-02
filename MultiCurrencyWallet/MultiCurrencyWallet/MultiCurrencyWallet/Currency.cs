@@ -23,5 +23,11 @@ namespace MultiCurrencyWallet
         {
             return this.rate / c.rate; // 1 c = return THIS
         }
+
+        public static double ConvertAmount(DatabaseOps db, double amount, string codeFrom, string codeTo)
+        {
+            double rate = db.GetCurrency(codeFrom).rate / db.GetCurrency(codeTo).rate;
+            return amount * rate;
+        }
     }
 }
