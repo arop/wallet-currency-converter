@@ -147,6 +147,7 @@ namespace MultiCurrencyWallet
                     selectedCurrency.code);
         }
 
+
         void OnButtonClicked(object sender, EventArgs e)
         {
 

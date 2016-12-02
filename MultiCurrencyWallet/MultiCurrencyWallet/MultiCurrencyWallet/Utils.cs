@@ -8,5 +8,7 @@ namespace MultiCurrencyWallet
         public static Color removeColor = Color.FromRgb(200, 70, 70);
 
         public static Currency favoriteCurrency; // load this when app loads
+
+        public static string[] currencyCodes = { "AUD", "CAD", "CHF", "CNY", "EUR", "GBP", "INR", "JPY", "MYR", "SGD", "USD" };
     }
 }

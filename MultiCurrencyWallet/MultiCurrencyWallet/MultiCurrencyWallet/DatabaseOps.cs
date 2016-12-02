@@ -27,13 +27,13 @@ namespace MultiCurrencyWallet
             }
         }
 
-        public IEnumerable<Currency> GetItemsNotDone()
+        /*public IEnumerable<Currency> GetItemsNotDone()
         {
             lock (locker)
             {
                 return database.Query<Currency>("SELECT * FROM Currency WHERE rate = 1");
             }
-        }
+        }*/
 
         public Currency GetCurrency(string code)
         {

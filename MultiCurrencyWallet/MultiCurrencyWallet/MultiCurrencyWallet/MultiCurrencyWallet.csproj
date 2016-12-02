@@ -38,6 +38,7 @@
     <Compile Include="App.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="DatabaseOps.cs" />
+    <Compile Include="HttpRequestRates.cs" />
     <Compile Include="ISQLite.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="InputValuePage.cs" />
