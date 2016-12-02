@@ -26,7 +26,7 @@ namespace MultiCurrencyWallet
 
         public static double ConvertAmount(DatabaseOps db, double amount, string codeFrom, string codeTo)
         {
-            double rate = db.GetCurrency(codeFrom).rate / db.GetCurrency(codeTo).rate;
+            double rate = db.GetCurrency(codeTo).rate / db.GetCurrency(codeFrom).rate;
             return amount * rate;
         }
     }
