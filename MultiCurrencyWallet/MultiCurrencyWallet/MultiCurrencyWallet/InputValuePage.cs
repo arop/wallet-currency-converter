@@ -176,7 +176,7 @@ namespace MultiCurrencyWallet
 
         void UpdateTotal()
         {
-            this.totalAmount.Text = wallet.GetTotal(selectedCurrency.code, db).ToString();
+            this.totalAmount.Text = string.Format("{0:0.00}", wallet.GetTotal(selectedCurrency.code, db));
         }
 
     }
