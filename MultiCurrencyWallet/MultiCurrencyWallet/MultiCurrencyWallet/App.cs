@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MultiCurrencyWallet.Database;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,6 +27,12 @@ namespace MultiCurrencyWallet
             }
 
             Utils.favoriteCurrency = db.GetCurrencies().ElementAt(4);
+
+            foreach(WalletAmount wa in db.GetWalletAmounts())
+            {
+                wallet.AddAmount(wa.code, wa.amount);
+            }
+
 
             // The root page of your application
             var content = new InputValuePage(db,wallet);

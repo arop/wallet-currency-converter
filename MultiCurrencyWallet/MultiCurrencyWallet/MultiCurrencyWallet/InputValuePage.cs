@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MultiCurrencyWallet.Database;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -116,6 +117,7 @@ namespace MultiCurrencyWallet
             totalAmount = new Label();
             totalAmount.Text = "0.0";
             grid.Children.Add(totalAmount, 1, 6);
+            UpdateTotal();
 
             Content = new StackLayout{
                 Children = { grid }
@@ -166,6 +168,8 @@ namespace MultiCurrencyWallet
                     wallet.AddAmount(code, amount);
                 }
                 else wallet.RemoveAmount(code, amount);
+
+                db.UpdateWalletAmount(new WalletAmount(code, wallet.Balances[code]));
 
                 UpdateTotal();
             } catch
