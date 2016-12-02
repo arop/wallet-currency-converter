@@ -19,9 +19,13 @@ namespace MultiCurrencyWallet
         public DatabaseOps db;
         public Currency selectedCurrency;
 
-        public InputValuePage(DatabaseOps db)
+        private Wallet wallet;
+        public Label totalAmount;
+
+        public InputValuePage(DatabaseOps db, Wallet w)
         {
             this.db = db;
+            wallet = w;
 
             ////////////////// ACTION PICKER //////////////////
             actionPicker = new Picker
@@ -36,7 +40,7 @@ namespace MultiCurrencyWallet
             actionPicker.SelectedIndexChanged += actionChanged;
 
             ////////////////// VALUE INPUT //////////////////
-            var entryLabel = new Label()
+            entryLabel = new Label()
             {
                 Text = "Amount:"
             };
@@ -98,12 +102,8 @@ namespace MultiCurrencyWallet
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
             };
 
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            for(int i = 0; i < 7; i++)
+                grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
             grid.Children.Add(actionPicker, 1, 0);
             grid.Children.Add(entryLabel, 1, 1);
@@ -111,6 +111,11 @@ namespace MultiCurrencyWallet
             grid.Children.Add(currencyPicker, 1, 3);
             grid.Children.Add(currencyRateLabel, 1, 4);
             grid.Children.Add(button, 1, 5);
+
+
+            totalAmount = new Label();
+            totalAmount.Text = "0.0";
+            grid.Children.Add(totalAmount, 1, 6);
 
             Content = new StackLayout{
                 Children = { grid }
@@ -138,6 +143,7 @@ namespace MultiCurrencyWallet
             //Debug.WriteLine("action changed");
             selectedCurrency = db.GetCurrencies().ElementAt(((Picker)sender).SelectedIndex);
             updateCurrencyRateLabelText();
+            UpdateTotal();
         }
 
         private void updateCurrencyRateLabelText()
@@ -150,7 +156,27 @@ namespace MultiCurrencyWallet
 
         void OnButtonClicked(object sender, EventArgs e)
         {
+            string code = selectedCurrency.code;
+            try
+            {
+                double amount = Convert.ToDouble(valueEntry.Text);
+                valueEntry.BackgroundColor = Color.Default;
+                if (button.Text == "Add")
+                {
+                    wallet.AddAmount(code, amount);
+                }
+                else wallet.RemoveAmount(code, amount);
 
+                UpdateTotal();
+            } catch
+            {
+                valueEntry.BackgroundColor = Color.Red;
+            }
+        }
+
+        void UpdateTotal()
+        {
+            this.totalAmount.Text = wallet.GetTotal(selectedCurrency.code, db).ToString();
         }
 
     }

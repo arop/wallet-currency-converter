@@ -12,6 +12,7 @@ namespace MultiCurrencyWallet
     {
 
         DatabaseOps db = new DatabaseOps();
+        Wallet wallet = new Wallet();
 
         public App()
         {
@@ -27,7 +28,7 @@ namespace MultiCurrencyWallet
             Utils.favoriteCurrency = db.GetCurrencies().ElementAt(4);
 
             // The root page of your application
-            var content = new InputValuePage(db);
+            var content = new InputValuePage(db,wallet);
             content.Title = "Add Money";
             MainPage = new NavigationPage(content);
 
