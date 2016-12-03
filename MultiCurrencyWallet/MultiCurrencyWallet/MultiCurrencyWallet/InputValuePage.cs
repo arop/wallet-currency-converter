@@ -25,8 +25,24 @@ namespace MultiCurrencyWallet
 
         public InputValuePage(DatabaseOps db, Wallet w)
         {
+            this.Title = "Add Money";
+
             this.db = db;
             wallet = w;
+
+            //////////////////// TOOLBAR /////////////////////
+            var balancePageButton = new ToolbarItem
+            {
+                Text = "Balance",
+                Command = new Command(this.ShowBalancePage)
+            };
+            
+            if (Device.OS == TargetPlatform.Windows)
+            {
+                balancePageButton.Order = ToolbarItemOrder.Secondary;
+            }
+
+            ToolbarItems.Add(balancePageButton);
 
             ////////////////// ACTION PICKER //////////////////
             actionPicker = new Picker
@@ -183,5 +199,11 @@ namespace MultiCurrencyWallet
             this.totalAmount.Text = string.Format("{0:0.00}", wallet.GetTotal(selectedCurrency.code, db));
         }
 
+
+        async private void ShowBalancePage()
+        {
+            BalancePage newPage = new BalancePage(wallet, db);
+            await Navigation.PushAsync(newPage, true);
+        }
     }
 }

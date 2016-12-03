@@ -41,6 +41,8 @@ namespace MultiCurrencyWallet
                 if (currentValue - amount >= 0.0)
                 {
                     balances[code] = currentValue - amount;
+                    if (balances[code] == 0)
+                        balances.Remove(code);
                     return true;
                 }
             }

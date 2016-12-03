@@ -1,5 +1,6 @@
 ﻿{
   "dependencies": {
+    "Acr.DeviceInfo": "4.0.2",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "sqlite-net-pcl": "1.2.1",
     "Xamarin.Forms": "2.3.3.168"

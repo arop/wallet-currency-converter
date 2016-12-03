@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Android.Content.Res;
+using Xamarin.Forms;
 
 namespace MultiCurrencyWallet
 {
@@ -10,5 +11,9 @@ namespace MultiCurrencyWallet
         public static Currency favoriteCurrency; // load this when app loads
 
         public static string[] currencyCodes = { "AUD", "CAD", "CHF", "CNY", "EUR", "GBP", "INR", "JPY", "MYR", "SGD", "USD" };
+
+        public static Color[] graphBarColors = { Color.Blue, Color.Red, Color.Green, Color.Aqua, Color.Fuchsia, Color.Black,
+            Color.Lime, Color.Orange, Color.Navy, Color.Pink, Color.Silver };
+
     }
 }
