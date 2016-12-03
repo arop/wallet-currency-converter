@@ -1,0 +1,15 @@
+SRCSRV: ini ------------------------------------------------
+VERSION=2
+SRCSRV: variables ------------------------------------------
+RAWURL=https://raw.github.com/aritchie/deviceinfo/ac41da2b44a2d61fc67c60e8742b2645b45ee7ba/%var2%
+SRCSRVVERCTRL=https
+SRCSRVTRG=%RAWURL%
+SRCSRV: source files ---------------------------------------
+C:\dev\acr\deviceinfo\src\Acr.DeviceInfo.Net45\AppImpl.cs*src/Acr.DeviceInfo.Net45/AppImpl.cs
+C:\dev\acr\deviceinfo\src\Acr.DeviceInfo.Net45\BatteryImpl.cs*src/Acr.DeviceInfo.Net45/BatteryImpl.cs
+C:\dev\acr\deviceinfo\src\Acr.DeviceInfo.Net45\ConnectivityImpl.cs*src/Acr.DeviceInfo.Net45/ConnectivityImpl.cs
+C:\dev\acr\deviceinfo\src\Acr.DeviceInfo.Net45\HardwareImpl.cs*src/Acr.DeviceInfo.Net45/HardwareImpl.cs
+C:\dev\acr\deviceinfo\src\Acr.DeviceInfo.Net45\Properties\AssemblyInfo.cs*src/Acr.DeviceInfo.Net45/Properties/AssemblyInfo.cs
+C:\dev\acr\deviceinfo\src\Acr.DeviceInfo.Shared\AssemblyInfo.cs*src/Acr.DeviceInfo.Shared/AssemblyInfo.cs
+C:\dev\acr\deviceinfo\src\Acr.DeviceInfo.Shared\DeviceInfo.cs*src/Acr.DeviceInfo.Shared/DeviceInfo.cs
+SRCSRV: end ------------------------------------------------
