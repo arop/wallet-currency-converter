@@ -10,7 +10,7 @@ namespace MultiCurrencyWallet
     public class InputValuePage : ContentPage
     {
         private Picker actionPicker, currencyPicker;
-        private Label entryLabel, currencyRateLabel;
+        private Label entryLabel, currencyRateLabel, errorLabel;
         private Entry valueEntry;
         private Button button;
         private DatabaseOps db;
@@ -91,12 +91,17 @@ namespace MultiCurrencyWallet
                 HorizontalOptions = LayoutOptions.FillAndExpand
             };
 
+            int favouriteIndex = 0;
+            int counter = 0;
             foreach (Currency c in db.GetCurrencies())
             {
                 currencyPicker.Items.Add(c.code);
+                if (c.code == favouriteCurrency.code)
+                    favouriteIndex = counter;
+                counter++;
             }
-            currencyPicker.SelectedIndex = 0;
-            selectedCurrency = db.GetCurrencies().ElementAt(0);
+            currencyPicker.SelectedIndex = favouriteIndex;
+            selectedCurrency = db.GetCurrencies().ElementAt(favouriteIndex);
             currencyPicker.SelectedIndexChanged += currencyChanged;
 
             ////////////////// CURRENT CURRENCY RATE //////////////////
@@ -112,6 +117,14 @@ namespace MultiCurrencyWallet
                 BackgroundColor = Utils.addColor
             };
             button.Clicked += OnButtonClicked;
+
+            ////////////////// ERROR LABEL //////////////////
+            errorLabel = new Label()
+            {
+                Text = "",
+                TextColor = Color.Red,
+                HorizontalTextAlignment = TextAlignment.Center
+            };
 
             ////////////////// GRID //////////////////
             var grid = new Grid()
@@ -136,6 +149,7 @@ namespace MultiCurrencyWallet
             grid.Children.Add(currencyPicker, 1, 3);
             grid.Children.Add(currencyRateLabel, 1, 4);
             grid.Children.Add(button, 1, 5);
+            grid.Children.Add(errorLabel, 1, 6);
 
             Content = new StackLayout
             {
@@ -182,13 +196,18 @@ namespace MultiCurrencyWallet
             string code = selectedCurrency.code;
             try
             {
+                errorLabel.Text = "";
                 double amount = Convert.ToDouble(valueEntry.Text);
                 valueEntry.BackgroundColor = Color.Default;
                 if (button.Text == "Add")
                 {
                     wallet.AddAmount(code, amount);
                 }
-                else wallet.RemoveAmount(code, amount);
+                else if(!wallet.RemoveAmount(code, amount))
+                {
+                    valueEntry.BackgroundColor = Color.Red;
+                    errorLabel.Text = "Not enough money!";
+                }
 
                 db.UpdateWalletAmount(new WalletAmount(code, wallet.Balances[code]));
 
@@ -196,6 +215,7 @@ namespace MultiCurrencyWallet
             } catch
             {
                 valueEntry.BackgroundColor = Color.Red;
+                errorLabel.Text = "Invalid value!";
             }
         }
         
