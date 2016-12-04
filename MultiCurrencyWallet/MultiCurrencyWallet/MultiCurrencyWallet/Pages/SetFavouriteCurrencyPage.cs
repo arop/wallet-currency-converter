@@ -18,6 +18,8 @@ namespace MultiCurrencyWallet.Pages
             db = d;
             string favouriteCurrency = db.GetGlobal("favouriteCurrency");
 
+            this.Title = "Favourite Currency";
+
             //////////////////////// LABEL ///////////////////
             Label topLabel = new Label()
             {

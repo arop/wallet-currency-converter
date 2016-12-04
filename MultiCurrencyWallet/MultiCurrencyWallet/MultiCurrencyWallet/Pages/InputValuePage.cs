@@ -181,7 +181,8 @@ namespace MultiCurrencyWallet
                 else wallet.RemoveAmount(code, amount);
 
                 db.UpdateWalletAmount(new WalletAmount(code, wallet.Balances[code]));
-                
+
+                valueEntry.Text = "";
             } catch
             {
                 valueEntry.BackgroundColor = Color.Red;
