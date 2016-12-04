@@ -39,7 +39,7 @@ namespace MultiCurrencyWallet
             var content = new InputValuePage(db,wallet);
             MainPage = new NavigationPage(content);
 
-            HttpRequestRates.RefreshRates(db);
+            content.UpdateCurrencies();
         }
 
         protected override void OnStart()

@@ -13,11 +13,18 @@ namespace MultiCurrencyWallet
         private Label entryLabel, currencyRateLabel, errorLabel;
         private Entry valueEntry;
         private Button button;
+
         private DatabaseOps db;
         private Currency selectedCurrency;
         private Currency favouriteCurrency;
 
+        private int loadedCurrencies;
+        private bool errorLoadingCurrencies;
+
         private Wallet wallet;
+        private int numberOfCurrencies;
+
+        static object locker = new object();
 
         public InputValuePage(DatabaseOps db, Wallet w)
         {
@@ -59,6 +66,17 @@ namespace MultiCurrencyWallet
 
             showRatesPageButton.Order = ToolbarItemOrder.Secondary;
             ToolbarItems.Add(showRatesPageButton);
+
+
+            var updateCurrenciesButton = new ToolbarItem
+            {
+                Text = "Update Currencies",
+                Command = new Command(this.UpdateCurrencies)
+            };
+
+            updateCurrenciesButton.Order = ToolbarItemOrder.Secondary;
+            ToolbarItems.Add(updateCurrenciesButton);
+
             ////////////////// ACTION PICKER //////////////////
             actionPicker = new Picker
             {
@@ -92,13 +110,13 @@ namespace MultiCurrencyWallet
             };
 
             int favouriteIndex = 0;
-            int counter = 0;
+            numberOfCurrencies = 0;
             foreach (Currency c in db.GetCurrencies())
             {
                 currencyPicker.Items.Add(c.code);
                 if (c.code == favouriteCurrency.code)
-                    favouriteIndex = counter;
-                counter++;
+                    favouriteIndex = numberOfCurrencies;
+                numberOfCurrencies++;
             }
             currencyPicker.SelectedIndex = favouriteIndex;
             selectedCurrency = db.GetCurrencies().ElementAt(favouriteIndex);
@@ -143,13 +161,13 @@ namespace MultiCurrencyWallet
             for (int i = 0; i < 7; i++)
                 grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
-            grid.Children.Add(actionPicker, 1, 0);
-            grid.Children.Add(entryLabel, 1, 1);
-            grid.Children.Add(valueEntry, 1, 2);
-            grid.Children.Add(currencyPicker, 1, 3);
-            grid.Children.Add(currencyRateLabel, 1, 4);
-            grid.Children.Add(button, 1, 5);
-            grid.Children.Add(errorLabel, 1, 6);
+            grid.Children.Add(errorLabel, 1, 0);
+            grid.Children.Add(actionPicker, 1, 1);
+            grid.Children.Add(entryLabel, 1, 2);
+            grid.Children.Add(valueEntry, 1, 3);
+            grid.Children.Add(currencyPicker, 1, 4);
+            grid.Children.Add(currencyRateLabel, 1, 5);
+            grid.Children.Add(button, 1, 6);
 
             Content = new StackLayout
             {
@@ -157,6 +175,42 @@ namespace MultiCurrencyWallet
             };
 
         }
+
+        public void ErrorLoadingCurrencies()
+        {
+            lock (locker)
+            {
+                errorLabel.Text = "Not every currency was updated!";
+            }
+        }
+
+        public void IncrementLoadedCurrencies()
+        {
+            lock (locker)
+            {
+                if (errorLoadingCurrencies)
+                    return;
+                loadedCurrencies++;
+                errorLabel.Text = "Loading Currencies (" + loadedCurrencies + "/" + numberOfCurrencies + ")";
+
+                if (currencyPicker.Items.Count == loadedCurrencies)
+                {
+                    errorLabel.Text = "All currencies were updated!";
+                }
+            }
+        }
+
+        public void UpdateCurrencies()
+        {
+            lock (locker)
+            {
+                errorLoadingCurrencies = false;
+                loadedCurrencies = 0;
+                errorLabel.Text = "Loading Currencies (" + loadedCurrencies + "/" + numberOfCurrencies + ")";
+                HttpRequestRates.RefreshRates(db, this);
+            }
+        }
+
 
         private void actionChanged(object sender, EventArgs e)
         {
@@ -203,10 +257,9 @@ namespace MultiCurrencyWallet
                 {
                     wallet.AddAmount(code, amount);
                 }
-                else if(!wallet.RemoveAmount(code, amount))
+                else if(!wallet.RemoveAmount(code, amount)) // not enough money to remove
                 {
-                    valueEntry.BackgroundColor = Color.Red;
-                    errorLabel.Text = "Not enough money!";
+                    SetAmountError("Not enough money!");
                 }
 
                 db.UpdateWalletAmount(new WalletAmount(code, wallet.Balances[code]));
@@ -214,9 +267,23 @@ namespace MultiCurrencyWallet
                 valueEntry.Text = "";
             } catch
             {
-                valueEntry.BackgroundColor = Color.Red;
-                errorLabel.Text = "Invalid value!";
+                SetAmountError("Invalid value!");
             }
+        }
+
+        private void SetAmountError(string errorMessage)
+        {
+            /*if (Device.OS == TargetPlatform.Android)
+            {
+                valueEntry.BackgroundColor = Color.Red.MultiplyAlpha(0.5);
+            }
+            else // UWP
+            {
+                valueEntry.BackgroundColor = Color.Red;
+            }*/
+            valueEntry.PlaceholderColor = Color.Red;
+            valueEntry.Focus();
+            errorLabel.Text = errorMessage;
         }
         
         async private void ShowBalancePage()
