@@ -36,16 +36,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="BalancePage.cs" />
+    <Compile Include="Database\Global.cs" />
+    <Compile Include="Pages\BalancePage.cs" />
     <Compile Include="Database\WalletAmount.cs" />
     <Compile Include="Database\Currency.cs" />
     <Compile Include="Database\DatabaseOps.cs" />
-    <Compile Include="HttpRequestRates.cs" />
+    <Compile Include="Pages\SetFavouriteCurrencyPage.cs" />
+    <Compile Include="Utils\HttpRequestRates.cs" />
     <Compile Include="ISQLite.cs" />
-    <Compile Include="Utils.cs" />
-    <Compile Include="InputValuePage.cs" />
+    <Compile Include="Utils\Utils.cs" />
+    <Compile Include="Pages\InputValuePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Wallet.cs" />
+    <Compile Include="Database\Wallet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

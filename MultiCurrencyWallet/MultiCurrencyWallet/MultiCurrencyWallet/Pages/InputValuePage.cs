@@ -1,4 +1,5 @@
 ﻿using MultiCurrencyWallet.Database;
+using MultiCurrencyWallet.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,6 +45,14 @@ namespace MultiCurrencyWallet
 
             ToolbarItems.Add(balancePageButton);
 
+
+            var setFavouriteCurrencyButton = new ToolbarItem
+            {
+                Text = "Favourite Currency",
+                Command = new Command(this.ShowSetFavouriteCurrencyPage)
+            };
+            setFavouriteCurrencyButton.Order = ToolbarItemOrder.Secondary;
+            ToolbarItems.Add(setFavouriteCurrencyButton);
             ////////////////// ACTION PICKER //////////////////
             actionPicker = new Picker
             {
@@ -205,5 +214,13 @@ namespace MultiCurrencyWallet
             BalancePage newPage = new BalancePage(wallet, db);
             await Navigation.PushAsync(newPage, true);
         }
+
+        async private void ShowSetFavouriteCurrencyPage()
+        {
+            SetFavouriteCurrencyPage newPage = new SetFavouriteCurrencyPage(db);
+            await Navigation.PushAsync(newPage, true);
+        }
+
+        
     }
 }

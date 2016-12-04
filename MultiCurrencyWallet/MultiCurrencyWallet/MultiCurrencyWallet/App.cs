@@ -25,8 +25,10 @@ namespace MultiCurrencyWallet
                 {
                     db.UpdateCurrency(new Currency() { code = cod, rate = 1.0 });
                 }
-            }
 
+                db.SetGlobal("favouriteCurrency", "EUR");
+            }
+                
             Utils.favoriteCurrency = db.GetCurrencies().ElementAt(4); // 4 is EUR.
 
             foreach(WalletAmount wa in db.GetWalletAmounts())

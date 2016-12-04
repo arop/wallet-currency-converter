@@ -33,6 +33,8 @@ namespace MultiCurrencyWallet
             Debug.WriteLine("Height: " + screenHeight + " # Width: " + screenWidth);
             graphMaxHeight = screenHeight * 0.6;
 
+            selectedCurrency = db.GetCurrency(db.GetGlobal("favouriteCurrency"));
+
             InitializeMainGrid();
             InitializeGraph();
             InitializeTotals();
@@ -125,12 +127,16 @@ namespace MultiCurrencyWallet
                 HorizontalOptions = LayoutOptions.Center
             };
 
+            int favouriteIndex = 0;
+            int counter = 0;
             foreach (Currency c in db.GetCurrencies())
             {
+                if (c.code == selectedCurrency.code)
+                    favouriteIndex = counter;
                 currencyPicker.Items.Add(c.code);
+                counter++;
             }
-            currencyPicker.SelectedIndex = 4;
-            selectedCurrency = db.GetCurrency("EUR");
+            currencyPicker.SelectedIndex = favouriteIndex;
             currencyPicker.SelectedIndexChanged += currencyChanged;
 
             //////////////////////// LABEL ///////////////////

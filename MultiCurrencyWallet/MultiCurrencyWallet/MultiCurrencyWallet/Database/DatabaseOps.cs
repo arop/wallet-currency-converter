@@ -18,6 +18,7 @@ namespace MultiCurrencyWallet
             database = DependencyService.Get<ISQLite>().GetConnection();
             database.CreateTable<Currency>();
             database.CreateTable<WalletAmount>();
+            database.CreateTable<Global>();
         }
 
         
@@ -122,5 +123,30 @@ namespace MultiCurrencyWallet
                     database.Insert(c);
             }
         }
+
+
+        ///////////////////// GLOBALS ////////////////////
+        public string GetGlobal(string k)
+        {
+            lock (locker)
+            {
+                var result = database.Table<Global>().FirstOrDefault(x => x.key == k);
+                if (result != null)
+                    return result.value;
+                return null;
+            }
+        }
+
+        public void SetGlobal(string k, string v)
+        {
+            Global g = new Global(k, v);
+
+            lock (locker)
+            {
+                if (database.Update(g) == 0)
+                    database.Insert(g);
+            }
+        }
+
     }
 }
