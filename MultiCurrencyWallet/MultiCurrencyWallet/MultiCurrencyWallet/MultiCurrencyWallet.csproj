@@ -41,6 +41,7 @@
     <Compile Include="Database\WalletAmount.cs" />
     <Compile Include="Database\Currency.cs" />
     <Compile Include="Database\DatabaseOps.cs" />
+    <Compile Include="Pages\RatesPage.cs" />
     <Compile Include="Pages\SetFavouriteCurrencyPage.cs" />
     <Compile Include="Utils\HttpRequestRates.cs" />
     <Compile Include="ISQLite.cs" />

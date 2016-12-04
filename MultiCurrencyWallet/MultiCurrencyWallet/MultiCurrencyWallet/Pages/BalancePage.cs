@@ -162,7 +162,7 @@ namespace MultiCurrencyWallet
 
         private void UpdateTotalLabelText()
         {
-            string labelText = Math.Round(wallet.GetTotal(selectedCurrency.code, db), 2) + " " + selectedCurrency.code;
+            string labelText = string.Format("{0:0.00} ", wallet.GetTotal(selectedCurrency.code, db)) + selectedCurrency.code;
             totalLabel.Text = labelText;
         }
 

@@ -18,7 +18,7 @@ namespace MultiCurrencyWallet
         private Currency favouriteCurrency;
 
         private Wallet wallet;
-        
+
         public InputValuePage(DatabaseOps db, Wallet w)
         {
             Title = "Add/Remove Money";
@@ -34,7 +34,7 @@ namespace MultiCurrencyWallet
                 Text = "Balance",
                 Command = new Command(this.ShowBalancePage)
             };
-            
+
             if (Device.OS == TargetPlatform.Windows)
             {
                 balancePageButton.Order = ToolbarItemOrder.Secondary;
@@ -42,14 +42,23 @@ namespace MultiCurrencyWallet
 
             ToolbarItems.Add(balancePageButton);
 
-
             var setFavouriteCurrencyButton = new ToolbarItem
             {
                 Text = "Favourite Currency",
                 Command = new Command(this.ShowSetFavouriteCurrencyPage)
             };
+
             setFavouriteCurrencyButton.Order = ToolbarItemOrder.Secondary;
             ToolbarItems.Add(setFavouriteCurrencyButton);
+
+            var showRatesPageButton = new ToolbarItem
+            {
+                Text = "Rates",
+                Command = new Command(this.ShowRatesPage)
+            };
+
+            showRatesPageButton.Order = ToolbarItemOrder.Secondary;
+            ToolbarItems.Add(showRatesPageButton);
             ////////////////// ACTION PICKER //////////////////
             actionPicker = new Picker
             {
@@ -81,7 +90,7 @@ namespace MultiCurrencyWallet
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand
             };
-            
+
             foreach (Currency c in db.GetCurrencies())
             {
                 currencyPicker.Items.Add(c.code);
@@ -118,7 +127,7 @@ namespace MultiCurrencyWallet
                     new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) }
             };
 
-            for(int i = 0; i < 7; i++)
+            for (int i = 0; i < 7; i++)
                 grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
             grid.Children.Add(actionPicker, 1, 0);
@@ -128,7 +137,8 @@ namespace MultiCurrencyWallet
             grid.Children.Add(currencyRateLabel, 1, 4);
             grid.Children.Add(button, 1, 5);
 
-            Content = new StackLayout{
+            Content = new StackLayout
+            {
                 Children = { grid }
             };
 
@@ -198,6 +208,12 @@ namespace MultiCurrencyWallet
         async private void ShowSetFavouriteCurrencyPage()
         {
             SetFavouriteCurrencyPage newPage = new SetFavouriteCurrencyPage(db,this);
+            await Navigation.PushAsync(newPage, true);
+        }
+
+        async private void ShowRatesPage()
+        {
+            RatesPage newPage = new RatesPage(db);
             await Navigation.PushAsync(newPage, true);
         }
     }
