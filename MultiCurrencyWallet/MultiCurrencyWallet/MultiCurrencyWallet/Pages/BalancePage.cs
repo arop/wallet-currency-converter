@@ -156,7 +156,6 @@ namespace MultiCurrencyWallet
             mainGrid.Children.Add(totals, 0, 2);
         }
 
-
         private void currencyChanged(object sender, EventArgs e)
         {
             //Debug.WriteLine("action changed");

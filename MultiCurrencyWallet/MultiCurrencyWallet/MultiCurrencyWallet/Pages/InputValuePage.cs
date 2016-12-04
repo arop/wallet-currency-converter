@@ -1,12 +1,7 @@
 ﻿using MultiCurrencyWallet.Database;
 using MultiCurrencyWallet.Pages;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
 
 using Xamarin.Forms;
 
@@ -23,12 +18,10 @@ namespace MultiCurrencyWallet
         private Currency favouriteCurrency;
 
         private Wallet wallet;
-
-
-
+        
         public InputValuePage(DatabaseOps db, Wallet w)
         {
-            this.Title = "Add/Remove Money";
+            Title = "Add/Remove Money";
 
             this.db = db;
             wallet = w;
@@ -163,11 +156,16 @@ namespace MultiCurrencyWallet
 
         private void updateCurrencyRateLabelText()
         {
-            this.currencyRateLabel.Text = string.Format("1 {0} = {1} {2}", favouriteCurrency.code,
+            currencyRateLabel.Text = string.Format("1 {0} = {1} {2}", favouriteCurrency.code,
                     Math.Round(db.GetCurrency(selectedCurrency.code).getRate(favouriteCurrency), 5),
                     selectedCurrency.code);
         }
 
+        public void updateFavouriteCurrency()
+        {
+            favouriteCurrency = Utils.getFavouriteCurrency(db);
+            updateCurrencyRateLabelText();
+        }
 
         void OnButtonClicked(object sender, EventArgs e)
         {
@@ -198,8 +196,8 @@ namespace MultiCurrencyWallet
 
         async private void ShowSetFavouriteCurrencyPage()
         {
-            SetFavouriteCurrencyPage newPage = new SetFavouriteCurrencyPage(db);
+            SetFavouriteCurrencyPage newPage = new SetFavouriteCurrencyPage(db,this);
             await Navigation.PushAsync(newPage, true);
-        }        
+        }
     }
 }

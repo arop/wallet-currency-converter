@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
 
 using Xamarin.Forms;
 
@@ -14,10 +11,10 @@ namespace MultiCurrencyWallet.Pages
         Currency selectedCurrency;
         DatabaseOps db;
         Label favouriteCurrencyLabel;
+        private InputValuePage inputValuePage;
 
         public SetFavouriteCurrencyPage(DatabaseOps d)
         {
-
             db = d;
             string favouriteCurrency = db.GetGlobal("favouriteCurrency");
 
@@ -111,11 +108,17 @@ namespace MultiCurrencyWallet.Pages
             };
         }
 
+        public SetFavouriteCurrencyPage(DatabaseOps d, InputValuePage inputValuePage) : this(d)
+        {
+            this.inputValuePage = inputValuePage;
+        }
+
         private void OnSaveButtonClicked(object sender, EventArgs e)
         {
             string newCode = db.GetCurrencies().ElementAt(currencyPicker.SelectedIndex).code;
             db.SetGlobal("favouriteCurrency", newCode);
             favouriteCurrencyLabel.Text = newCode;
+            inputValuePage.updateFavouriteCurrency();
         }
     }
 }
