@@ -23,7 +23,6 @@ namespace MultiCurrencyWallet
         private Currency favouriteCurrency;
 
         private Wallet wallet;
-        private Label totalAmount;
 
 
 
@@ -112,14 +111,6 @@ namespace MultiCurrencyWallet
             };
             button.Clicked += OnButtonClicked;
 
-
-            /*var stack1 = new StackLayout()
-            {
-                Orientation = StackOrientation.Vertical,
-                Children = { actionPicker, entryLabel, valueEntry, button },
-                HorizontalOptions = LayoutOptions.Center
-            };*/
-
             ////////////////// GRID //////////////////
             var grid = new Grid()
             {
@@ -144,12 +135,6 @@ namespace MultiCurrencyWallet
             grid.Children.Add(currencyRateLabel, 1, 4);
             grid.Children.Add(button, 1, 5);
 
-
-            totalAmount = new Label();
-            totalAmount.Text = "0.0";
-            grid.Children.Add(totalAmount, 1, 6);
-            UpdateTotal();
-
             Content = new StackLayout{
                 Children = { grid }
             };
@@ -158,7 +143,6 @@ namespace MultiCurrencyWallet
 
         private void actionChanged(object sender, EventArgs e)
         {
-            //Debug.WriteLine("action changed");
             if(((Picker)sender).SelectedIndex == 0)
             {
                 button.Text = "Add";
@@ -173,10 +157,8 @@ namespace MultiCurrencyWallet
 
         private void currencyChanged(object sender, EventArgs e)
         {
-            //Debug.WriteLine("action changed");
             selectedCurrency = db.GetCurrencies().ElementAt(((Picker)sender).SelectedIndex);
             updateCurrencyRateLabelText();
-            UpdateTotal();
         }
 
         private void updateCurrencyRateLabelText()
@@ -201,20 +183,13 @@ namespace MultiCurrencyWallet
                 else wallet.RemoveAmount(code, amount);
 
                 db.UpdateWalletAmount(new WalletAmount(code, wallet.Balances[code]));
-
-                UpdateTotal();
+                
             } catch
             {
                 valueEntry.BackgroundColor = Color.Red;
             }
         }
-
-        void UpdateTotal()
-        {
-            this.totalAmount.Text = string.Format("{0:0.00}", wallet.GetTotal(selectedCurrency.code, db));
-        }
-
-
+        
         async private void ShowBalancePage()
         {
             BalancePage newPage = new BalancePage(wallet, db);
@@ -225,8 +200,6 @@ namespace MultiCurrencyWallet
         {
             SetFavouriteCurrencyPage newPage = new SetFavouriteCurrencyPage(db);
             await Navigation.PushAsync(newPage, true);
-        }
-
-        
+        }        
     }
 }

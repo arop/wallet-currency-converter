@@ -1,6 +1,4 @@
-﻿using System;
-using Android.Content.Res;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace MultiCurrencyWallet
 {

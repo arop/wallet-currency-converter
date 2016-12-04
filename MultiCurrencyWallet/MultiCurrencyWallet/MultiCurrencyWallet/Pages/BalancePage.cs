@@ -90,7 +90,7 @@ namespace MultiCurrencyWallet
             graphGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
             double walletTotal = wallet.GetTotal("EUR", db);
-            double barWidth = screenWidth / wallet.Balances.Count;
+            double barWidth = (wallet.Balances.Count <= 3 ? screenWidth/5 : screenWidth / wallet.Balances.Count);
 
             Debug.WriteLine("max: " + graphMaxHeight);
             Debug.WriteLine("wallet total: " + walletTotal);
@@ -111,7 +111,7 @@ namespace MultiCurrencyWallet
 
                 graphGrid.Children.Add(bar, i, 0);
                 graphGrid.Children.Add(new Label() { Text = wallet.Balances.ElementAt(i).Key, HorizontalTextAlignment = TextAlignment.Center }, i, 1);
-                graphGrid.Children.Add(new Label() { Text = wallet.Balances.ElementAt(i).Value.ToString(), HorizontalTextAlignment = TextAlignment.Center }, i, 2);
+                graphGrid.Children.Add(new Label() { Text = string.Format("{0:0.00}", wallet.Balances.ElementAt(i).Value), HorizontalTextAlignment = TextAlignment.Center }, i, 2);
             }
 
             mainGrid.Children.Add(graphGrid, 0, 0);
