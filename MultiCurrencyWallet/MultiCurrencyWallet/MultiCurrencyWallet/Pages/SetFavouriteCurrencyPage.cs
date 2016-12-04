@@ -81,7 +81,8 @@ namespace MultiCurrencyWallet.Pages
             ////////////////// GRID //////////////////
             var grid = new Grid()
             {
-                HorizontalOptions = LayoutOptions.Center
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand
             };
 
             grid.ColumnDefinitions = new ColumnDefinitionCollection
@@ -91,8 +92,8 @@ namespace MultiCurrencyWallet.Pages
                     new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) }
             };
 
-            for (int i = 0; i < 3; i++)
-                grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            /*for (int i = 0; i < 3; i++)
+                grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });*/
 
             grid.Children.Add(topLabel, 1, 0);
             grid.Children.Add(favouriteCurrencyLabel, 1, 1);

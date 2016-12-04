@@ -14,22 +14,27 @@ namespace MultiCurrencyWallet
 {
     public class InputValuePage : ContentPage
     {
-        public Picker actionPicker, currencyPicker;
-        public Label entryLabel, currencyRateLabel;
-        public Entry valueEntry;
-        public Button button;
-        public DatabaseOps db;
-        public Currency selectedCurrency;
+        private Picker actionPicker, currencyPicker;
+        private Label entryLabel, currencyRateLabel;
+        private Entry valueEntry;
+        private Button button;
+        private DatabaseOps db;
+        private Currency selectedCurrency;
+        private Currency favouriteCurrency;
 
         private Wallet wallet;
-        public Label totalAmount;
+        private Label totalAmount;
+
+
 
         public InputValuePage(DatabaseOps db, Wallet w)
         {
-            this.Title = "Add Money";
+            this.Title = "Add/Remove Money";
 
             this.db = db;
             wallet = w;
+
+            favouriteCurrency = Utils.getFavouriteCurrency(db);
 
             //////////////////// TOOLBAR /////////////////////
             var balancePageButton = new ToolbarItem
@@ -118,14 +123,15 @@ namespace MultiCurrencyWallet
             ////////////////// GRID //////////////////
             var grid = new Grid()
             {
-                HorizontalOptions = LayoutOptions.Center
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand
             };
 
             grid.ColumnDefinitions = new ColumnDefinitionCollection
             {
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
                     new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) },
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                    new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) }
             };
 
             for(int i = 0; i < 7; i++)
@@ -175,8 +181,8 @@ namespace MultiCurrencyWallet
 
         private void updateCurrencyRateLabelText()
         {
-            this.currencyRateLabel.Text = string.Format("1 {0} = {1} {2}", Utils.favoriteCurrency.code,
-                    Math.Round(db.GetCurrency(selectedCurrency.code).getRate(Utils.favoriteCurrency), 5),
+            this.currencyRateLabel.Text = string.Format("1 {0} = {1} {2}", favouriteCurrency.code,
+                    Math.Round(db.GetCurrency(selectedCurrency.code).getRate(favouriteCurrency), 5),
                     selectedCurrency.code);
         }
 
