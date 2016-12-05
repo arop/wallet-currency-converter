@@ -24,15 +24,15 @@ Relevant features:
 <img src="Screenshots/Android/12.png" width="250">
 
 ### Universal Windows Platform
-<img src="Screenshots/UWP/01.PNG" width="250">
-<img src="Screenshots/UWP/02.PNG" width="250">
-<img src="Screenshots/UWP/03.PNG" width="250">
-<img src="Screenshots/UWP/04.PNG" width="250">
-<img src="Screenshots/UWP/05.PNG" width="250">
-<img src="Screenshots/UWP/06.PNG" width="250">
-<img src="Screenshots/UWP/07.PNG" width="250">
-<img src="Screenshots/UWP/08.PNG" width="250">
-<img src="Screenshots/UWP/09.PNG" width="250">
-<img src="Screenshots/UWP/10.PNG" width="250">
-<img src="Screenshots/UWP/11.PNG" width="250">
-<img src="Screenshots/UWP/12.PNG" width="250">
+<img src="Screenshots/UWP/01.PNG" width="400">
+<img src="Screenshots/UWP/02.PNG" width="400">
+<img src="Screenshots/UWP/03.PNG" width="400">
+<img src="Screenshots/UWP/04.PNG" width="400">
+<img src="Screenshots/UWP/05.PNG" width="400">
+<img src="Screenshots/UWP/06.PNG" width="400">
+<img src="Screenshots/UWP/07.PNG" width="400">
+<img src="Screenshots/UWP/08.PNG" width="400">
+<img src="Screenshots/UWP/09.PNG" width="400">
+<img src="Screenshots/UWP/10.PNG" width="400">
+<img src="Screenshots/UWP/11.PNG" width="400">
+<img src="Screenshots/UWP/12.PNG" width="400">
