@@ -271,11 +271,13 @@ namespace MultiCurrencyWallet
                 if (button.Text == "Add")
                 {
                     wallet.AddAmount(code, amount);
+                    valueEntry.PlaceholderColor = Color.Gray;
                 }
                 else if(!wallet.RemoveAmount(code, amount)) // not enough money to remove
                 {
                     SetAmountError("Not enough money!");
                 }
+                else valueEntry.PlaceholderColor = Color.Gray;
 
                 db.UpdateWalletAmount(new WalletAmount(code, wallet.Balances[code]));
 
