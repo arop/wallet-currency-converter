@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MultiCurrencyWallet
@@ -20,6 +16,7 @@ namespace MultiCurrencyWallet
                 var cb = new AsyncCallback(CallHandler);
                 CallWebAsync(uri, db, cb, page);
             }
+
         }
 
         private static void CallWebAsync(string uri, DatabaseOps db, AsyncCallback cb, InputValuePage page)
@@ -27,7 +24,7 @@ namespace MultiCurrencyWallet
             var request = HttpWebRequest.Create(uri);
             request.Method = "GET";
             var state = new Tuple<DatabaseOps, WebRequest, InputValuePage>(db, request, page);
-
+            
             request.BeginGetResponse(cb, state);
         }
 

@@ -25,6 +25,7 @@ namespace MultiCurrencyWallet
         private int numberOfCurrencies;
 
         static object locker = new object();
+        private ProgressBar progressBar;
 
         public InputValuePage(DatabaseOps db, Wallet w)
         {
@@ -76,6 +77,14 @@ namespace MultiCurrencyWallet
 
             updateCurrenciesButton.Order = ToolbarItemOrder.Secondary;
             ToolbarItems.Add(updateCurrenciesButton);
+
+            /////////////////// PROGRESS BAR //////////////////
+
+            progressBar = new ProgressBar
+            {
+                Progress = 0,
+            };           
+
 
             ////////////////// ACTION PICKER //////////////////
             actionPicker = new Picker
@@ -171,7 +180,7 @@ namespace MultiCurrencyWallet
 
             Content = new StackLayout
             {
-                Children = { grid }
+                Children = { progressBar,  grid }
             };
 
         }
@@ -191,7 +200,11 @@ namespace MultiCurrencyWallet
                 if (errorLoadingCurrencies)
                     return;
                 loadedCurrencies++;
-                errorLabel.Text = "Loading Currencies (" + loadedCurrencies + "/" + numberOfCurrencies + ")";
+                //errorLabel.Text = "Loading Currencies (" + loadedCurrencies + "/" + numberOfCurrencies + ")";
+
+                var progress = loadedCurrencies / numberOfCurrencies;
+                // animate the progression to 80%, in 250ms
+                progressBar.ProgressTo(progress, 250, Easing.Linear);
 
                 if (currencyPicker.Items.Count == loadedCurrencies)
                 {
@@ -206,7 +219,9 @@ namespace MultiCurrencyWallet
             {
                 errorLoadingCurrencies = false;
                 loadedCurrencies = 0;
-                errorLabel.Text = "Loading Currencies (" + loadedCurrencies + "/" + numberOfCurrencies + ")";
+                //errorLabel.Text = "Loading Currencies (" + loadedCurrencies + "/" + numberOfCurrencies + ")";
+                errorLabel.Text = "";
+                progressBar.ProgressTo(0, 0, Easing.Linear);
                 HttpRequestRates.RefreshRates(db, this);
             }
         }
