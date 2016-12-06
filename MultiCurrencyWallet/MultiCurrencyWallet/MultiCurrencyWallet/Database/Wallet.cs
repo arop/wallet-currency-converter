@@ -33,7 +33,13 @@ namespace MultiCurrencyWallet
             else balances.Add(code, amount);
         }
 
-        public bool RemoveAmount(string code, double amount)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="amount"></param>
+        /// <returns>New value for this currency. Negative if not enough money.</returns>
+        public double RemoveAmount(string code, double amount)
         {
             double currentValue = 0.0;
             if (balances.TryGetValue(code, out currentValue))
@@ -42,11 +48,14 @@ namespace MultiCurrencyWallet
                 {
                     balances[code] = currentValue - amount;
                     if (balances[code] == 0)
+                    {
                         balances.Remove(code);
-                    return true;
+                        return 0;
+                    }
+                    return balances[code];
                 }
             }
-            return false;
+            return -1;
         }
 
         public double GetTotal(string code, DatabaseOps db)

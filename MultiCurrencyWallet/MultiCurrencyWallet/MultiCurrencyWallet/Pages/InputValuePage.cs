@@ -272,14 +272,19 @@ namespace MultiCurrencyWallet
                 {
                     wallet.AddAmount(code, amount);
                     valueEntry.PlaceholderColor = Color.Gray;
-                }
-                else if(!wallet.RemoveAmount(code, amount)) // not enough money to remove
-                {
-                    SetAmountError("Not enough money!");
-                }
-                else valueEntry.PlaceholderColor = Color.Gray;
+                    db.UpdateWalletAmount(new WalletAmount(code, wallet.Balances[code]));
 
-                db.UpdateWalletAmount(new WalletAmount(code, wallet.Balances[code]));
+                }
+                else
+                {
+                    double newBalance = wallet.RemoveAmount(code, amount); // not enough money to remove
+
+                    if(newBalance < 0)
+                        SetAmountError("Not enough money!");
+                    else valueEntry.PlaceholderColor = Color.Gray;
+                    db.UpdateWalletAmount(new WalletAmount(code, newBalance));
+                }
+
 
                 valueEntry.Text = "";
             } catch
